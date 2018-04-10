@@ -9,4 +9,5 @@ api来自知乎( [知乎Zhihu](http://www.zhihu.com/) ), 项目中所有内容�
 npm install
 npm run dev
 
+建议浏览器F12手机模式浏览
 ```
