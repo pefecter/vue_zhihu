@@ -10,4 +10,6 @@ npm install
 npm run dev
 
 建议浏览器F12手机模式浏览
+
+ceshi 
 ```
