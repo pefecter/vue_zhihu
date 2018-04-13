@@ -5,8 +5,8 @@
                 <!-- 用来创建一个圆 -->
                 <circle class="loader-path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
             </svg>
-            <span v-show="loading" class="scroll-loading-more-text">{{loadingText}}</span>
         </div>
+        <span v-show="loading" class="scroll-loading-more-text">{{loadingText}}</span>
     </div>
 </template>
 
@@ -27,9 +27,7 @@
         },
         methods: {
             onScroll() {
-                if (this.loading) {
-                    return
-                }
+                if (this.loading) return
                 const scroller = this.scroller
                 const isWindow = scroller === window
                 //用户滑动了的高度
@@ -38,11 +36,12 @@
                 //document.documentElement.scrollHeight页面显示的总高度
                 const scrollHeight = isWindow ? document.documentElement.scrollHeight || document.body.scrollHeight : scroller.scrollHeight
                 //能滑动的高度
-                let height = scrollHeight-scrollTop-5 
+                let height = scrollHeight - scrollTop - 5
                 //页面展示内容的高度
                 let contentHeight = isWindow ? window.innerHeight : scroller.offsetHeight
                 //当可滑动距离小于展示内容高度是传出加载更多事件
-                if (height<=contentHeight) {
+                if (height <= contentHeight) {
+                    //触发滑动加载事件
                     this.$emit('load')
                 }
             }
@@ -52,7 +51,7 @@
 
 <style lang="less" scoped>
     .scroll-loading-more {
-        widows: 100%;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -78,13 +77,13 @@
         animation: rotate 2s linear infinite;
         width: 100%;
         height: 100%;
+        margin: auto;
         transform-origin: center center; //设置旋转元素的基点位置
         position: absolute;
         top: 0;
         bottom: 0;
         left: 0;
         right: 0;
-        margin: auto;
     }
     @keyframes rotate {
         from {

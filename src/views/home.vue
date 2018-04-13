@@ -9,7 +9,7 @@
         </m-swipe>
         <div class="list" v-for="list in lists" :key="list.id">
             <p class="list-time">{{list.date.substring(0,4)+"/"+list.date.substring(4,6)+"/"+list.date.substring(6,8)}}</p>
-            <div class="list-ico" v-for="item in list.stories" :key="item.id">
+            <div class="list-ico" v-for="item in list.stories" :key="item.id" @click="toGo(item.id)">
                 <img :src="item.images[0]" alt="">
                 <p>{{item.title}}</p>
             </div>
@@ -17,7 +17,9 @@
         <!-- loading -->
         <loading v-if="!lists.length"></loading>
         <!-- 滑动加载更多组件 -->
-        <scroll-loading-more :scroller="scroller"></scroll-loading-more>
+        <scroll-loading-more :scroller="scroller" :loading="loading" @load="loadMore"></scroll-loading-more>
+        <!-- 返回顶部 -->
+        <back-button :scroller="scroller" :flag="circle"></back-button>
     </div>
 </template>
 
@@ -32,17 +34,17 @@
                 circle: state => state.circleFlag
             })
         },
-        mounted() {
+        mounted() { 
             this.getList(1);
             //滑动加载的区域
-            this.scroller = this.$el; 
+            this.scroller = this.$el;
             let swiper = this.$refs.swiper;
-            console.log(this.scroller)
+            if (swiper.dom) {
+                this.swiper = swiper.dom;
+            }
         },
         data() {
             return {
-                // refreshing: false,
-                // trigger: null,
                 loading: false,
                 count: 1,
                 swiper: "", //banner滑动
@@ -52,22 +54,50 @@
             }
         },
         methods: {
-            toGo() {
+            toGo(id) {
+                //路由跳转
                 this.$router.push({
-                    path: 'article',
+                    path: "article",
                     query: {
                         id: id
                     }
                 });
+                //修改vuex中drawer的状态
+                this.$store.commit("back");
             },
             //获取文章信息
             getList(data) {
-                api.getNews().then(res => {
-                    console.log(res);
-                    this.tops = res.data.top_stories;
-                    this.lists.push(res.data);
-                    // this.loading = false;
-                })
+                if (data) {
+                    api.getNews().then(res => {
+                        this.tops = res.data.top_stories;
+                        this.lists.push(res.data);
+                        this.loading = false;
+                    })
+                } else {
+                    api.getNewsByDate(this.GetDate(this.count)).then(res => {
+                        this.lists.push(res.data);
+                        this.loading = false;
+                    })
+                }
+            },
+            //下拉加载更多
+            loadMore() {
+                this.loading = true;
+                setTimeout(() => {
+                    this.count--;
+                    this.getList();
+                }, 500);
+            },
+            //获取日期
+            GetDate(count) {
+                var time = new Date();
+                time.setDate(time.getDate() + count); //获取AddDayCount天后的日期
+                var y = time.getFullYear();
+                var m = time.getMonth() + 1; //获取当前月份的日期
+                m = m >= 10 ? m : '0' + m;
+                var d = time.getDate();
+                d = d >= 10 ? d : '0' + d;
+                return y + "" + m + "" + d;
             }
         }
     }
@@ -96,7 +126,6 @@
             padding-top: 0;
             .list-time {
                 top: -.8rem;
-                z-index: 1;
             }
         }
     }
@@ -140,7 +169,8 @@
     }
     .list {
         width: 90%;
-        position: absolute;
+        position: relative;
+        z-index: 1;
         padding-top: .8rem;
         margin: .8rem auto 0 .5rem;
         &-time {
@@ -156,6 +186,7 @@
             background-color: @yellow;
             transform: translate(0, -50%);
             position: absolute;
+            z-index: 1;
             box-shadow: 0 3px 10px 0 rgba(91, 115, 146, .15)
         }
         &-ico {
@@ -179,5 +210,4 @@
             }
         }
     }
-   
 </style>

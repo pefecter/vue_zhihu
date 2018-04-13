@@ -1,7 +1,7 @@
 {
   "name": "zhihu",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Vue zhihu",
   "author": "walleeeee",
   "private": true,
   "scripts": {
@@ -12,15 +12,16 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "babel-runtime": "^6.23.0",
     "vue": "^2.2.1",
+    "vue-drawer-layout":"0.3.1",
     "vue-router": "^2.2.0",
-	"vuex": "^2.2.1",
-    "axios": "^0.15.3"
+    "vuex": "^2.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
-	"less": "^2.7.2",
+    "less": "^2.7.2",
     "less-loader": "^3.0.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",

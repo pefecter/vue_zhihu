@@ -3,15 +3,19 @@ import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import App from './App'
 import router from './router'
+import DrawerLayout from "vue-drawer-layout" //
 import swipe from './components/swipe/swipe'
 import loading from './components/loading'
 import scrollLoadingMore from './components/scrollLoadingMore'
+import backButton from './components/backButton'
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
-Vue.component(swipe.name, swipe)
-Vue.component(loading.name, loading)
-Vue.component(scrollLoadingMore.name, scrollLoadingMore)
+Vue.use(DrawerLayout)
+Vue.component('m-swipe', swipe)// Vue.component(swipe.name, swipe)
+Vue.component('loading', loading)
+Vue.component('scroll-loading-more', scrollLoadingMore)
+Vue.component('back-button', backButton)
 const store = new Vuex.Store({
     state: {
         num: 1,

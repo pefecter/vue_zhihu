@@ -47,20 +47,19 @@ export default {
 		}
 	},
 	mounted() {
-		var That = this;
-		this.dom = new Swiper('.' + That.swipeid, {
+		this.dom = new Swiper('.' + this.swipeid, {
 			//循环
-			loop: That.loop,
+			loop: this.loop,
 			//分页器
 			pagination: '.swiper-pagination',
 			//分页类型
-			paginationType: That.paginationType, //fraction,progress,bullets
+			paginationType: this.paginationType, //fraction,progress,bullets
 			//自动播放
-			autoplay: That.autoplay,
+			autoplay: this.autoplay,
 			//方向
-			direction: That.direction,
+			direction: this.direction,
 			//特效
-			effect: That.effect, //slide,fade,coverflow,cube
+			effect: this.effect, //slide,fade,coverflow,cube
 			autoplayDisableOnInteraction: false,
 			observer: true, //修改swiper自己或子元素时，自动初始化swiper
 			observeParents: true //修改swiper的父元素时，自动初始化swiper

@@ -1,13 +1,95 @@
 <template>
   <div id='app'>
-    <keep-alive>
-      <router-view class="app-view"></router-view>
-    </keep-alive>
+    <vue-drawer-layout ref="drawer" 
+      :drawer-width="250" 
+      :enable="true" 
+      :animatable="true" 
+      :z-index="0" 
+      :drawable-distance="Math.floor(250/4)" 
+      :content-drawable="true" 
+      :backdrop="true" 
+      :backdrop-opacity-range="[0,0.4]" 
+      @mask-click="handleMaskClick"
+    >
+      <div class="drawer-content" slot="drawer">
+        <!-- 侧栏 -->
+      </div>
+      <div slot="content">
+        <!-- 内容 -->
+        <transition :name="transitionName">
+           <keep-alive>
+            <router-view class="app-view"></router-view>
+          </keep-alive>
+        </transition>
+        <!-- 顶部按钮 -->
+        <i v-if="!drawer" class="iconfont icon-ic_menu" @click="handleToggleDrawer"></i>
+        <i v-if="drawer" class="iconfont icon-ic_back" @click="back()"></i>
+      </div>
+    </vue-drawer-layout>
   </div>
 </template>
 
+<script>
+  import {
+    mapState
+  } from 'vuex';
+  import api from './api/index';
+  export default {
+    computed: {
+      ...mapState({
+        circle: state => state.circleFlag,
+        num: state => state.num,
+        drawer: state => state.drawer
+      })
+    },
+    data () {
+      return {
+        sortList:[],
+        transitionName:'slide-left'
+      }
+    },
+    mounted() {
+      console.log(this.drawer)
+    },
+    methods: {
+      handleToggleDrawer() {
+        this.$nextTick(() => {
+          this.$refs.drawer.toggle();
+        });
+      },
+      //蒙层点击事件
+      handleMaskClick() {
+        this.$nextTick(() => {
+          this.$refs.drawer.toggle();
+        });
+      },
+      back(n) {
+        if (n) {
+          this.$router.push({
+            path: 'home'
+          });
+        } else {
+          this.$router.go(-1);
+        }
+      }
+    }
+  };
+</script>
 
 <style lang="less">
+  .btn {
+    position: absolute;
+    display: block;
+    border-radius: 5px;
+    top: 5px;
+    left: 5px;
+    font-size: 14px;
+    padding: 10px 12px;
+    color: #333;
+    background-color: #fff;
+    text-decoration: none;
+    z-index: 9999;
+  }
   .slide-left-enter,
   .slide-right-leave-active {
     opacity: 0;
@@ -30,19 +112,13 @@
   .app-view-hidden {
     overflow: hidden;
   }
-  .header {
-    width: 100%;
-    height: 1.5rem;
-    z-index: 9;
-    padding-left: 5%;
-    position: fixed;
-    background-image: linear-gradient( 0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.51) 95%);
-    .iconfont {
-      color: #fff;
-      font-size: 0.8rem;
-      top: 20%;
-      position: relative;
-    }
+  .iconfont {
+    color: #fff;
+    font-size: 0.8rem;
+    top: .3rem;
+    position: relative;
+    z-index: 1;
+    left: .5rem;
   }
   .aside {
     z-index: 11;

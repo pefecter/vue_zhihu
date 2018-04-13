@@ -12,7 +12,7 @@ var zhihu_api = {
     sections: '/3/sections',
     sectionbyid: '/3/section',
 }
-//export const 设置为跨模块的常量
+//export const 设置为可以跨模块的常量
 export const NewsAxios = API_ROOT.concat(zhihu_api.news)
 export const NewsIdAxios = API_ROOT.concat(zhihu_api.newsbyid)
 export const NewsDateAxios = API_ROOT.concat(zhihu_api.newsbydate)
