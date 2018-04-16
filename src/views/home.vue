@@ -34,7 +34,18 @@
                 circle: state => state.circleFlag
             })
         },
-        mounted() { 
+        activated() {
+            if (this.swiper) {
+                this.swiper.startAutoplay();
+            }
+        },
+        deactivated() {
+            this.loop = false;
+            if (this.swiper) {
+                this.swiper.stopAutoplay();
+            }
+        },
+        mounted() {
             this.getList(1);
             //滑动加载的区域
             this.scroller = this.$el;

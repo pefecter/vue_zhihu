@@ -1,6 +1,8 @@
 <template>
-    <div class="circle" v-if="flag" @click="top()">
-        <i class="iconfont icon-ic_top"></i>
+    <div>
+        <div v-if="flag" class="circle" @click="backTop()">
+            <i class="iconfont icon-ic_top"></i>
+        </div>
     </div>
 </template>
 
@@ -31,22 +33,46 @@
                     this.flag && this.$store.commit('toggle')
                 }
             },
-            top() {
-                let vm = this;
-                let scroller = this.scroller;
-                let height = scroller.scrollTop;
-                let scrollTop = parseInt(height / 50); //每秒向上滑动的距离
+            //返回顶部
+            backTop() {
+                let vue = this;
+                let dom = document.querySelector('.app-view');
+                let height = dom.scrollTop;
+                let scrollTop = parseInt(height / 50);
                 let time = setInterval(function() {
                     height -= scrollTop;
                     if (height <= 0) {
-                        height = 0;
-                        vm.$store.commit('toggle');
+                        dom.scrollTop = 0;
+                        vue.$store.commit('toggle');
                         clearInterval(time);
                     } else {
-                        scroller.scrollTop = height;
+                        dom.scrollTop = height;
                     }
                 }, 1);
             }
         }
     }
 </script>
+<style lang="less">
+    .circle{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    // top: 0;
+    right: 5%;
+    bottom: 5vw;
+    position: fixed;
+    z-index: 10;
+    i {
+      top: 50%;
+      left: 50%;
+      font-size: 0.6rem;
+      color: #acb9c9;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+  }
+</style>
+

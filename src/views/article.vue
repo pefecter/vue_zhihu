@@ -1,7 +1,6 @@
 <template>
     <div class="cont">
         <div class="cont-img" v-if="data.image">
-            <!-- <i class="iconfont icon-ic_back" @click="back()"></i> -->
             <img :src="data.image">
             <div class="cont-img-mask"></div>
             <h2>{{ data.title }}</h2>
@@ -22,7 +21,8 @@
     export default {
         computed: mapState({
             circle: state => state.circleFlag,
-            article: state => state.article
+            article: state => state.article,
+            docked: state => state.docked
         }),
         data() {
             return {
@@ -30,13 +30,22 @@
                 scroller: window
             }
         },
+        activated: function() {
+            let id = this.$route.query.id;
+            if (this.article.hasOwnProperty(id)) {
+                this.data = this.article[id];
+            } else {
+                api.getNewsById(id).then(res => {
+                    console.log(res.data)
+                    this.data = res.data;
+                })
+            }
+        },
+        deactivated: function() {
+            this.data = "";
+        },
         mounted() {
             this.scroller = this.$el;
-            let id = this.$route.query.id;
-            api.getNewsById(id).then(res => {
-                console.log(res)
-                this.data = res.data;
-            })
         },
     }
 </script>

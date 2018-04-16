@@ -35,7 +35,7 @@ export default {
     getSections() {
         return axios.get(SectionsAxios)
     },
-    getTopicsById(section_id) {
+    getSectionsById(section_id) {
         return axios.get(SectionsIdAxios, {
             params: {
                 section_id: section_id

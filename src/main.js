@@ -21,8 +21,9 @@ const store = new Vuex.Store({
         num: 1,
         drawer: false, //抽屉显示
         circleFlag: false, //返回顶部按钮
-        theme: {}, //侧边栏
+        docked: false, //侧边栏显示
         article: {},
+        sort: {},
         before: ''
     },
     //    改变Vuex store 状态的方式
